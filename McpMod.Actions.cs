@@ -1084,6 +1084,14 @@ public static partial class McpMod
         if (string.IsNullOrEmpty(option))
             return Error("Missing menu option");
 
+        // Applies to this game session only, so the setting needs no settings-screen click
+        // and is not overwritten by a Steam Cloud copy of prefs.save at startup.
+        if (string.Equals(option, "instant_mode", System.StringComparison.OrdinalIgnoreCase))
+        {
+            MegaCrit.Sts2.Core.Saves.SaveManager.Instance.PrefsSave.FastMode = MegaCrit.Sts2.Core.Settings.FastModeType.Instant;
+            return new Dictionary<string, object?> { ["status"] = "ok", ["message"] = "Instant Mode enabled for this session" };
+        }
+
         var tree = (Engine.GetMainLoop()) as SceneTree;
         if (tree?.Root == null)
             return Error("Cannot access scene tree");
