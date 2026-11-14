@@ -3,6 +3,19 @@
 This file only explains how to operate the game through the MCP tools. It deliberately contains no strategy:
 decide every play yourself from the game state and from your own recorded experience in `GUIDE.md`.
 
+## Starting and Stopping the Game
+
+Play in the background without a game window unless the user asks for a window. Steam must be running.
+
+- **Start:** `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\start-game.ps1`
+  It finds the game through Steam, starts it with `--headless`, waits for the main menu and enables Instant Mode.
+  Do not start the game through Steam (`steam://rungameid/...`) or by running the executable yourself: that opens a window.
+  `-Windowed` starts it with a window if the user wants to watch.
+- **Stop:** `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\stop-game.ps1`
+  It quits cleanly from the main menu. During a run it refuses; `-Force` stops the process and can lose progress in the current room.
+- If the script reports that the game is already running, check with `get_game_state` before stopping anything: the user may be playing.
+- After the start, check the active profile with `list_profiles` and do not switch profiles unless the user asks.
+
 ## MCP Tool Calling Tips
 
 ### Timing
